@@ -29,8 +29,9 @@ if [ "$ID" == "root" ]; then
     exit 1;
 fi
 
-SSID=`networksetup -listallhardwareports | awk '/Wi-Fi/{getline; print $2}' | xargs networksetup -getairportnetwork | awk '{print $NF}'`
-
+#SSID=`networksetup -listallhardwareports | awk '/Wi-Fi/{getline; print $2}' | xargs networksetup -getairportnetwork | awk '{print $NF}'`
+# Change technique for macOS 15 https://discussions.apple.com/thread/255778674?sortBy=rank
+SSID=`system_profiler SPAirPortDataType | awk '/Current Network/ {getline;$1=$1; gsub(":",""); print;exit}'`
 LOCATION_NAMES=`networksetup -listlocations`
 CURRENT_LOCATION=`networksetup -getcurrentlocation`
 
